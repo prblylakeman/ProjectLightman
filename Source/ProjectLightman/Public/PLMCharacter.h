@@ -4,10 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "InputActionValue.h"
 #include "PLMCharacter.generated.h"
 
 class UCameraComponent;
 class USpringArmComponent;
+class UInputMappingContext;
+class UInputAction;
 
 UCLASS()
 class PROJECTLIGHTMAN_API APLMCharacter : public ACharacter
@@ -26,10 +29,17 @@ protected:
 	UPROPERTY(VisibleAnywhere);
 	UCameraComponent* CameraComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
+	UInputMappingContext* PlayerMappingContext;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
+	UInputAction* MoveAction;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	void MoveForward(float Value);
+	void MoveForward(const FInputActionValue& Value);
+
 
 public:	
 	// Called every frame

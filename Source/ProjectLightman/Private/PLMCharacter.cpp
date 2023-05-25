@@ -4,6 +4,9 @@
 #include "PLMCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Components/InputComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "../Plugins/EnhancedInput/Source/EnhancedInput/Public/EnhancedInputComponent.h"
 
 // Sets default values
 APLMCharacter::APLMCharacter()
@@ -22,13 +25,23 @@ APLMCharacter::APLMCharacter()
 void APLMCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+	{
+		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
+		Subsystem->AddMappingContext(PlayerMappingContext, 0);
+	}
 }
 
-void APLMCharacter::MoveForward(float Value)
+void APLMCharacter::MoveForward(const FInputActionValue& Value)
 {
-	AddMovementInput(GetActorForwardVector(), Value);
+	const bool CurrentValue = Value.Get<bool>();
+	if (CurrentValue)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("IA_Move triggered"));
+	}
 }
+
 
 // Called every frame
 void APLMCharacter::Tick(float DeltaTime)
@@ -42,7 +55,13 @@ void APLMCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAxis("MoveForward", this, &APLMCharacter::MoveForward);
-	PlayerInputComponent->BindAxis("Turn", this, &APLMCharacter::AddControllerYawInput);
+	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
+	{
+		// JumpAction
+
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APLMCharacter::MoveForward);
+
+		// EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APLMCharacter::Turn);
+	}
 }
 

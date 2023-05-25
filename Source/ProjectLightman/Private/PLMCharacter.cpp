@@ -33,12 +33,25 @@ void APLMCharacter::BeginPlay()
 	}
 }
 
-void APLMCharacter::MoveForward(const FInputActionValue& Value)
+void APLMCharacter::Move(const FInputActionValue& Value)
 {
-	const bool CurrentValue = Value.Get<bool>();
-	if (CurrentValue)
+	const float DirectionValue = Value.Get<float>();
+	
+	if (Controller && (DirectionValue != 0.f))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("IA_Move triggered"));
+		FVector Forward = GetActorForwardVector();
+		AddMovementInput(Forward, DirectionValue);
+	}
+}
+
+void APLMCharacter::Look(const FInputActionValue& Value)
+{
+	const FVector2d LookAxisValue = Value.Get<FVector2D>();
+
+	if (GetController())
+	{
+		AddControllerYawInput(LookAxisValue.X);
+		AddControllerPitchInput(LookAxisValue.Y);
 	}
 }
 
@@ -59,9 +72,9 @@ void APLMCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	{
 		// JumpAction
 
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APLMCharacter::MoveForward);
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APLMCharacter::Move);
 
-		// EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APLMCharacter::Turn);
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APLMCharacter::Look);
 	}
 }
 

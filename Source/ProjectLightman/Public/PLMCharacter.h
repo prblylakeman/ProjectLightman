@@ -17,6 +17,11 @@ class PROJECTLIGHTMAN_API APLMCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+protected:
+
+	UPROPERTY(EditAnywhere);
+	TSubclassOf<AActor> ProjectileClass;
+
 public:
 	// Sets default values for this character's properties
 	APLMCharacter();
@@ -41,12 +46,22 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
 	UInputAction* LookAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
+	UInputAction* JumpAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
+	UInputAction* PrimaryAttackAction;
+
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	void MoveForward(const FInputActionValue& Value);
 	void MoveRight(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
+	void PrimaryAttack();
+
+	virtual void Jump() override;
 
 public:	
 	// Called every frame

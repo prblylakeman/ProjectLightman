@@ -76,12 +76,29 @@ void APLMCharacter::Look(const FInputActionValue& Value)
 	}
 }
 
+void APLMCharacter::PrimaryAttack()
+{
+	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+
+	FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
+	
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+
+	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+}
+
+
+void APLMCharacter::Jump()
+{
+	Super::Jump();
+}
 
 // Called every frame
 void APLMCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input
@@ -91,12 +108,14 @@ void APLMCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
-		// JumpAction
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &APLMCharacter::Jump);
 
 		EnhancedInputComponent->BindAction(MoveForwardAction, ETriggerEvent::Triggered, this, &APLMCharacter::MoveForward);
 		EnhancedInputComponent->BindAction(MoveRightAction, ETriggerEvent::Triggered, this, &APLMCharacter::MoveRight);
 
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APLMCharacter::Look);
+
+		EnhancedInputComponent->BindAction(PrimaryAttackAction, ETriggerEvent::Triggered, this, &APLMCharacter::PrimaryAttack);
 	}
 }
 

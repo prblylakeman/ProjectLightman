@@ -33,7 +33,10 @@ protected:
 	UInputMappingContext* PlayerMappingContext;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
-	UInputAction* MoveAction;
+	UInputAction* MoveForwardAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
+	UInputAction* MoveRightAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
 	UInputAction* LookAction;
@@ -41,9 +44,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	void Move(const FInputActionValue& Value);
+	void MoveForward(const FInputActionValue& Value);
+	void MoveRight(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
-
 
 public:	
 	// Called every frame

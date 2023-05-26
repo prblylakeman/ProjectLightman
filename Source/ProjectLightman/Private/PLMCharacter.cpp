@@ -7,6 +7,7 @@
 #include "Components/InputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "../Plugins/EnhancedInput/Source/EnhancedInput/Public/EnhancedInputComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 APLMCharacter::APLMCharacter()
@@ -15,10 +16,15 @@ APLMCharacter::APLMCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
+	SpringArmComponent->bUsePawnControlRotation = true;
 	SpringArmComponent->SetupAttachment(RootComponent);
 
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
 	CameraComponent->SetupAttachment(SpringArmComponent);
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	bUseControllerRotationYaw = false;
 }
 
 // Called when the game starts or when spawned
@@ -33,15 +39,30 @@ void APLMCharacter::BeginPlay()
 	}
 }
 
-void APLMCharacter::Move(const FInputActionValue& Value)
+void APLMCharacter::MoveForward(const FInputActionValue& Value)
 {
 	const float DirectionValue = Value.Get<float>();
 	
 	if (Controller && (DirectionValue != 0.f))
 	{
-		FVector Forward = GetActorForwardVector();
-		AddMovementInput(Forward, DirectionValue);
+		FRotator ControlRot = GetControlRotation();
+		ControlRot.Pitch = 0.f;
+		ControlRot.Roll = 0.f;
+		AddMovementInput(ControlRot.Vector(), DirectionValue);
 	}
+}
+
+void APLMCharacter::MoveRight(const FInputActionValue& Value)
+{
+	const float RightValue = Value.Get<float>();
+
+	FRotator ControlRot = GetControlRotation();
+	ControlRot.Pitch = 0.f;
+	ControlRot.Roll = 0.f;
+
+	FVector RightVector = FRotationMatrix(ControlRot).GetScaledAxis(EAxis::Y);
+		
+	AddMovementInput(RightVector, RightValue);
 }
 
 void APLMCharacter::Look(const FInputActionValue& Value)
@@ -72,7 +93,8 @@ void APLMCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	{
 		// JumpAction
 
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APLMCharacter::Move);
+		EnhancedInputComponent->BindAction(MoveForwardAction, ETriggerEvent::Triggered, this, &APLMCharacter::MoveForward);
+		EnhancedInputComponent->BindAction(MoveRightAction, ETriggerEvent::Triggered, this, &APLMCharacter::MoveRight);
 
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APLMCharacter::Look);
 	}

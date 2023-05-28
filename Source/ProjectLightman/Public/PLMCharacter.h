@@ -11,6 +11,7 @@ class UCameraComponent;
 class USpringArmComponent;
 class UInputMappingContext;
 class UInputAction;
+class UPLMInteractComponent;
 
 UCLASS()
 class PROJECTLIGHTMAN_API APLMCharacter : public ACharacter
@@ -34,6 +35,9 @@ protected:
 	UPROPERTY(VisibleAnywhere);
 	UCameraComponent* CameraComponent;
 
+	UPROPERTY(VisibleAnywhere);
+	UPLMInteractComponent* InteractComponent;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
 	UInputMappingContext* PlayerMappingContext;
 
@@ -50,6 +54,9 @@ protected:
 	UInputAction* JumpAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
+	UInputAction* InteractAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
 	UInputAction* PrimaryAttackAction;
 
 
@@ -60,6 +67,7 @@ protected:
 	void MoveRight(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void PrimaryAttack();
+	void Interact();
 
 	virtual void Jump() override;
 

@@ -8,6 +8,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "../Plugins/EnhancedInput/Source/EnhancedInput/Public/EnhancedInputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "PLMInteractComponent.h"
 
 // Sets default values
 APLMCharacter::APLMCharacter()
@@ -21,6 +22,8 @@ APLMCharacter::APLMCharacter()
 
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
 	CameraComponent->SetupAttachment(SpringArmComponent);
+
+	InteractComponent = CreateDefaultSubobject<UPLMInteractComponent>("InteractComponent");
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
@@ -90,6 +93,14 @@ void APLMCharacter::PrimaryAttack()
 }
 
 
+void APLMCharacter::Interact()
+{
+	if (InteractComponent)
+	{
+		InteractComponent->PrimaryInteract();
+	}
+}
+
 void APLMCharacter::Jump()
 {
 	Super::Jump();
@@ -114,6 +125,8 @@ void APLMCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 		EnhancedInputComponent->BindAction(MoveRightAction, ETriggerEvent::Triggered, this, &APLMCharacter::MoveRight);
 
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APLMCharacter::Look);
+
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &APLMCharacter::Interact);
 
 		EnhancedInputComponent->BindAction(PrimaryAttackAction, ETriggerEvent::Triggered, this, &APLMCharacter::PrimaryAttack);
 	}

@@ -43,7 +43,7 @@ void UPLMInteractComponent::PrimaryInteract()
 
 	AActor* MyOwner = GetOwner();
 
-
+	float Radius = 30.f;
 
 	FVector EyeLocation;
 	FRotator EyeRotation;
@@ -52,19 +52,36 @@ void UPLMInteractComponent::PrimaryInteract()
 	
 	FVector End = EyeLocation + (EyeRotation.Vector() * 500);
 
-	FHitResult Hit;
-	GetWorld()->LineTraceSingleByObjectType(Hit, EyeLocation, End, ObjectQueryParams);
+	FColor LineColor = bBlockingHit ? FColor::Green, FColor::Red;
 
-	if (AActor* HitActor = Hit.GetActor())
+	//FHitResult Hit;
+	//bool bBlockingHit = GetWorld()->LineTraceSingleByObjectType(Hit, EyeLocation, End, ObjectQueryParams);
+
+	TArray<FHitResult> Hits;
+
+	FCollisionShape Shape;
+	Shape.SetSphere(Radius);
+
+	bool bBlockingHit = GetWorld()->SweepMultiByObjectType(Hits, EyeLocation, End, FQuat::Identity, ObjectQueryParams, Shape);
+
+	for (FHitResult Hit : Hits)
 	{
-		if (HitActor->Implements<UPLMGameplayInterface>())
+		if (AActor* HitActor = Hit.GetActor())
 		{
-			APawn* MyPawn = Cast<APawn>(MyOwner);
+			if (HitActor->Implements<UPLMGameplayInterface>())
+			{
+				APawn* MyPawn = Cast<APawn>(MyOwner);
 
-			IPLMGameplayInterface::Execute_Interact(HitActor, MyPawn);
+				IPLMGameplayInterface::Execute_Interact(HitActor, MyPawn);
+
+				break;
+			}
 		}
+
+		DrawDebugSphere(GetWorld(), Hit.Location, Radius, 32, LineColor, false, 1.5f);
+
 	}
-	
-	DrawDebugLine(GetWorld(), EyeLocation, End, FColor::Red, false, 2.f, 0, 1.5f);
+
+	DrawDebugLine(GetWorld(), EyeLocation, End, LineColor, false, 2.f, 0, 1.5f);
 
 }

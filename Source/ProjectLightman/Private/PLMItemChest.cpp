@@ -2,6 +2,8 @@
 
 
 #include "PLMItemChest.h"
+#include "Particles/ParticleSystemComponent.h"
+#include "../Plugins/FX/Niagara/Source/Niagara/Public/NiagaraComponent.h"
 
 // Sets default values
 APLMItemChest::APLMItemChest()
@@ -14,6 +16,15 @@ APLMItemChest::APLMItemChest()
 
 	LidMesh = CreateDefaultSubobject<UStaticMeshComponent>("LidMesh");
 	LidMesh->SetupAttachment(BaseMesh);
+
+	GoldMesh = CreateDefaultSubobject<UStaticMeshComponent>("GoldMesh");
+	GoldMesh->SetupAttachment(BaseMesh);
+
+	ParticleSystemComponent = CreateDefaultSubobject<UParticleSystemComponent>("ParticleSystemComponent");
+	ParticleSystemComponent->SetupAttachment(BaseMesh);
+
+	NiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>("NiagaraComponent");
+	NiagaraComponent->SetupAttachment(BaseMesh);
 
 	TargetPitch = 100.f;
 

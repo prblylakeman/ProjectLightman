@@ -30,6 +30,7 @@ APLMCharacter::APLMCharacter()
 	bUseControllerRotationYaw = false;
 }
 
+
 // Called when the game starts or when spawned
 void APLMCharacter::BeginPlay()
 {
@@ -81,17 +82,27 @@ void APLMCharacter::Look(const FInputActionValue& Value)
 
 void APLMCharacter::PrimaryAttack()
 {
+	float PrimaryAttackDelay = 0.2f;
+
+	PlayAnimMontage(PrimaryAttackAnim);
+
+	GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &APLMCharacter::PrimaryAttackTimeElapsed, PrimaryAttackDelay);
+
+	// clear timer code GetWorldTimerManager().ClearTimer(TimerHandle_PrimaryAttack);
+
+}
+
+void APLMCharacter::PrimaryAttackTimeElapsed()
+{
 	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
 
 	FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
-	
+
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-
 	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
 }
-
 
 void APLMCharacter::Interact()
 {

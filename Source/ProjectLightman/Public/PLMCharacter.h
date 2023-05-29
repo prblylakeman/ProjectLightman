@@ -12,6 +12,7 @@ class USpringArmComponent;
 class UInputMappingContext;
 class UInputAction;
 class UPLMInteractComponent;
+class UAnimMontage;
 
 UCLASS()
 class PROJECTLIGHTMAN_API APLMCharacter : public ACharacter
@@ -20,8 +21,13 @@ class PROJECTLIGHTMAN_API APLMCharacter : public ACharacter
 
 protected:
 
-	UPROPERTY(EditAnywhere);
+	UPROPERTY(EditAnywhere, Category = "Attack");
 	TSubclassOf<AActor> ProjectileClass;
+
+	UPROPERTY(EditAnywhere, Category = "Attack");
+	UAnimMontage* PrimaryAttackAnim;
+
+	FTimerHandle TimerHandle_PrimaryAttack;
 
 public:
 	// Sets default values for this character's properties
@@ -58,6 +64,8 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
 	UInputAction* PrimaryAttackAction;
+
+	void PrimaryAttackTimeElapsed();
 
 
 	// Called when the game starts or when spawned

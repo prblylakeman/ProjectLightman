@@ -52,8 +52,6 @@ void UPLMInteractComponent::PrimaryInteract()
 	
 	FVector End = EyeLocation + (EyeRotation.Vector() * 500);
 
-	FColor LineColor = bBlockingHit ? FColor::Green, FColor::Red;
-
 	//FHitResult Hit;
 	//bool bBlockingHit = GetWorld()->LineTraceSingleByObjectType(Hit, EyeLocation, End, ObjectQueryParams);
 
@@ -63,6 +61,8 @@ void UPLMInteractComponent::PrimaryInteract()
 	Shape.SetSphere(Radius);
 
 	bool bBlockingHit = GetWorld()->SweepMultiByObjectType(Hits, EyeLocation, End, FQuat::Identity, ObjectQueryParams, Shape);
+
+	FColor LineColor = bBlockingHit ? FColor::Green : FColor::Red;
 
 	for (FHitResult Hit : Hits)
 	{

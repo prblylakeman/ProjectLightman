@@ -12,24 +12,34 @@ APLMExplosiveBarrel::APLMExplosiveBarrel()
 	PrimaryActorTick.bCanEverTick = true;
 
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComponent");
-	//StaticMeshComponent->OnComponentHit.AddDynamic(this, &APLMExplosiveBarrel::OnActorHit);
+	StaticMeshComponent->SetSimulatePhysics(true);
 	RootComponent = StaticMeshComponent;
 
 	RadialForceComponent = CreateDefaultSubobject<URadialForceComponent>("RadialForceComponent");
-
-}
-
-// Called when the game starts or when spawned
-void APLMExplosiveBarrel::BeginPlay()
-{
-	Super::BeginPlay();
+	RadialForceComponent->SetupAttachment(StaticMeshComponent);
 	
+	RadialForceComponent->SetAutoActivate(false);
+
+	RadialForceComponent->Radius = 750.f;
+	RadialForceComponent->ImpulseStrength = 2500.f;
+	RadialForceComponent->bImpulseVelChange = true;
+
+	RadialForceComponent->AddCollisionChannelToAffect(ECC_WorldDynamic);
+
 }
 
-// Called every frame
-void APLMExplosiveBarrel::Tick(float DeltaTime)
+
+
+void APLMExplosiveBarrel::PostInitializeComponents()
 {
-	Super::Tick(DeltaTime);
+	// call parent
+	Super::PostInitializeComponents();
 
+	StaticMeshComponent->OnComponentHit.AddDynamic(this, &APLMExplosiveBarrel::OnActorHit);
 }
 
+void APLMExplosiveBarrel::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
+{
+	RadialForceComponent->FireImpulse();
+	Destroy();
+}

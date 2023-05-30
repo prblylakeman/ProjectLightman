@@ -41,5 +41,11 @@ void APLMExplosiveBarrel::PostInitializeComponents()
 void APLMExplosiveBarrel::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
 	RadialForceComponent->FireImpulse();
+
+	UE_LOG(LogTemp, Warning, TEXT("Hit by OtherActor: %s, at game time %f"), *GetNameSafe(OtherActor), GetWorld()->TimeSeconds);
+
+	FString CombinedString = FString::Printf(TEXT("Hit at location: %s"), *Hit.ImpactPoint.ToString());
+	DrawDebugString(GetWorld(), Hit.ImpactPoint, CombinedString, nullptr, FColor::Green, 2.f, true);
+
 	Destroy();
 }

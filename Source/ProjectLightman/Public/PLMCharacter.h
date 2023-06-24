@@ -13,6 +13,7 @@ class UInputMappingContext;
 class UInputAction;
 class UPLMInteractComponent;
 class UAnimMontage;
+class UPLMAttributeComponent;
 
 UCLASS()
 class PROJECTLIGHTMAN_API APLMCharacter : public ACharacter
@@ -64,6 +65,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
 	UInputAction* PrimaryAttackAction;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components");
+	UPLMAttributeComponent* AttributeComponent;
 
 	void PrimaryAttackTimeElapsed();
 

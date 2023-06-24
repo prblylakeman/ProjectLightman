@@ -9,6 +9,7 @@
 #include "../Plugins/EnhancedInput/Source/EnhancedInput/Public/EnhancedInputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "PLMInteractComponent.h"
+#include "PLMAttributeComponent.h"
 
 // Sets default values
 APLMCharacter::APLMCharacter()
@@ -24,6 +25,8 @@ APLMCharacter::APLMCharacter()
 	CameraComponent->SetupAttachment(SpringArmComponent);
 
 	InteractComponent = CreateDefaultSubobject<UPLMInteractComponent>("InteractComponent");
+
+	AttributeComponent = CreateDefaultSubobject<UPLMAttributeComponent>("AttributeComponent");
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
@@ -94,15 +97,18 @@ void APLMCharacter::PrimaryAttack()
 
 void APLMCharacter::PrimaryAttackTimeElapsed()
 {
-	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+	if (ensure(ProjectileClass))
+	{
+		FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
 
-	FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
+		FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
 
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	SpawnParams.Instigator = this;
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		SpawnParams.Instigator = this;
 
-	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+		GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+	}
 }
 
 void APLMCharacter::Interact()

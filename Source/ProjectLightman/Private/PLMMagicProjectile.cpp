@@ -7,6 +7,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
+#include "PLMAttributeComponent.h"
 
 // Sets default values
 APLMMagicProjectile::APLMMagicProjectile()
@@ -16,6 +17,7 @@ APLMMagicProjectile::APLMMagicProjectile()
 
 	SphereComponent = CreateDefaultSubobject<USphereComponent>("SphereComponent");
 	SphereComponent->SetCollisionProfileName("Projectile");
+	SphereComponent->OnComponentBeginOverlap.AddDynamic(this, &APLMMagicProjectile::OnActorOverlap);
 	RootComponent = SphereComponent;
 
 	EffectComponent = CreateDefaultSubobject<UParticleSystemComponent>("EffectComponent");
@@ -30,6 +32,20 @@ APLMMagicProjectile::APLMMagicProjectile()
 	MovementComponent->bInitialVelocityInLocalSpace = true;
 	MovementComponent->ProjectileGravityScale = 0.f;
 
+}
+
+void APLMMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (OtherActor)
+	{
+		UPLMAttributeComponent* AttributeComponent = Cast<UPLMAttributeComponent>(OtherActor->GetComponentByClass(UPLMAttributeComponent::StaticClass()));
+		if (AttributeComponent)
+		{
+			AttributeComponent->ApplyHealthChange(-20.f);
+
+			Destroy();
+		}
+	}
 }
 
 // Called when the game starts or when spawned

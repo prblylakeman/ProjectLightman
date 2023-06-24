@@ -66,8 +66,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
 	UInputAction* PrimaryAttackAction;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components");
-	UPLMAttributeComponent* AttributeComponent;
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components");
+	//UPLMAttributeComponent* AttributeComponent;
 
 	void PrimaryAttackTimeElapsed();
 

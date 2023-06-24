@@ -7,7 +7,7 @@
 #include "PLMAttributeComponent.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PROJECTLIGHTMAN_API UPLMAttributeComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -23,11 +23,17 @@ protected:
 	// EditDefaultsOnly - hide variable per-instance, edit in BP editor only
 	// VisibleDefaultsOnly - 'read-only' access for variable, only in BP editor (uncommon)
 	// EditInstanceOnly - allow only editing of instance (placed in level)
-	// BlueprintReadOnly - read-only in the Blueprint scriptiong (does not affect details panel)
+	// BlueprintReadOnly - read-only in the Blueprint scripting (does not affect details panel)
 	// BlueprintReadWrite - read-write access in Blueprints
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes");
-	float Health;
+	int Health;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes");
+	int MaxHealth;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes");
+	int InterpolatedHealth;
 
 	// HealthMax, Stamina, Strength, Mana, Energy, CriticalHitChance, BaseDamage, CriticalHitDamage, 
 

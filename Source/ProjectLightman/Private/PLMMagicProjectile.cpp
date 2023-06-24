@@ -41,7 +41,7 @@ void APLMMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponen
 		UPLMAttributeComponent* AttributeComponent = Cast<UPLMAttributeComponent>(OtherActor->GetComponentByClass(UPLMAttributeComponent::StaticClass()));
 		if (AttributeComponent)
 		{
-			AttributeComponent->ApplyHealthChange(-20.f);
+			AttributeComponent->ApplyHealthChange(-20);
 
 			Destroy();
 		}

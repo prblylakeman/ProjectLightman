@@ -8,7 +8,9 @@ UPLMAttributeComponent::UPLMAttributeComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
 
+	MaxHealth = 100;
 	Health = 100;
+	InterpolatedHealth = 100;
 }
 
 // Called when the game starts

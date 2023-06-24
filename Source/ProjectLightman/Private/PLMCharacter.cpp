@@ -26,7 +26,7 @@ APLMCharacter::APLMCharacter()
 
 	InteractComponent = CreateDefaultSubobject<UPLMInteractComponent>("InteractComponent");
 
-	AttributeComponent = CreateDefaultSubobject<UPLMAttributeComponent>("AttributeComponent");
+	//AttributeComponent = CreateDefaultSubobject<UPLMAttributeComponent>("AttributeComponent");
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 

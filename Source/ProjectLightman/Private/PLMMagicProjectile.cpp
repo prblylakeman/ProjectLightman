@@ -8,6 +8,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
 #include "PLMAttributeComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 APLMMagicProjectile::APLMMagicProjectile()
@@ -22,6 +23,10 @@ APLMMagicProjectile::APLMMagicProjectile()
 
 	EffectComponent = CreateDefaultSubobject<UParticleSystemComponent>("EffectComponent");
 	EffectComponent->SetupAttachment(SphereComponent);
+
+	//ImpactComponent = CreateDefaultSubobject<UParticleSystemComponent>("ImpactComponent");
+	//ImpactComponent->SetupAttachment(SphereComponent);
+	//ImpactComponent->bAutoActivate = false;
 
 	NiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>("NiagaraComponent");
 	NiagaraComponent->SetupAttachment(SphereComponent);
@@ -47,6 +52,7 @@ void APLMMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponen
 		}
 	}
 }
+
 
 // Called when the game starts or when spawned
 void APLMMagicProjectile::BeginPlay()

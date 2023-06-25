@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "PLMAttributeComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnChangeInitiated, AActor*, InstigatorActor, UPLMAttributeComponent*, OwningComponent, float, NewHealth, float, Delta);
 
 UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PROJECTLIGHTMAN_API UPLMAttributeComponent : public UActorComponent
@@ -40,6 +41,9 @@ protected:
 	// Called when the game starts
 
 public:	
+
+	UPROPERTY(BlueprintAssignable)
+	FOnChangeInitiated OnChangeInitiated;
 
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	bool ApplyHealthChange(float Delta);

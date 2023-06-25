@@ -35,6 +35,8 @@ bool UPLMAttributeComponent::ApplyHealthChange(float Delta)
 {
 	Health += Delta;
 
+	OnChangeInitiated.Broadcast(nullptr, this, Health, Delta);
+
 	return true;
 }
 

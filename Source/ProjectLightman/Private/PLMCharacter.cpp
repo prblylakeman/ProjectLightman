@@ -97,25 +97,82 @@ void APLMCharacter::PrimaryAttack()
 
 void APLMCharacter::PrimaryAttackTimeElapsed()
 {
-	if (ensure(ProjectileClass))
-	{
-		FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
-
-		FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
-
-		FActorSpawnParameters SpawnParams;
-		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		SpawnParams.Instigator = this;
-
-		GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
-	}
+	SpawnProjectile(ProjectileClass);
 }
+
 
 void APLMCharacter::Interact()
 {
 	if (InteractComponent)
 	{
 		InteractComponent->PrimaryInteract();
+	}
+}
+
+void APLMCharacter::Dash()
+{
+	float DashAnimDelay = 0.2f;
+
+	PlayAnimMontage(DashAnim);
+
+	GetWorldTimerManager().SetTimer(TimerHandle_Dash, this, &APLMCharacter::Dash_TimeElapsed, DashAnimDelay);
+}
+
+void APLMCharacter::Dash_TimeElapsed()
+{
+	SpawnProjectile(DashProjectileClass);
+}
+
+void APLMCharacter::BlackHoleAttack()
+{
+	float BlackHoleAnimDelay = 0.2f;
+
+	PlayAnimMontage(BlackHoleAttackAnim);
+
+	GetWorldTimerManager().SetTimer(TimerHandle_BlackHole, this, &APLMCharacter::BlackHoleAttack_TimeElapsed, BlackHoleAnimDelay);
+}
+
+void APLMCharacter::BlackHoleAttack_TimeElapsed()
+{
+	SpawnProjectile(BlackHoleProjectileClass);
+}
+
+void APLMCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
+{
+	if (ensureAlways(ClassToSpawn))
+	{
+		FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		SpawnParams.Instigator = this;
+
+		FCollisionShape Shape;
+		Shape.SetSphere(20.f);
+
+		FCollisionQueryParams Params;
+		Params.AddIgnoredActor(this);
+
+		FCollisionObjectQueryParams ObjectQueryParams;
+		ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
+		ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldStatic);
+		ObjectQueryParams.AddObjectTypesToQuery(ECC_Pawn);
+
+		FVector TraceStart = CameraComponent->GetComponentLocation();
+
+		FVector TraceEnd = CameraComponent->GetComponentLocation() + (GetControlRotation().Vector() * 5000);
+
+		FHitResult Hit;
+
+		if (GetWorld()->SweepSingleByObjectType(Hit, TraceStart, TraceEnd, FQuat::Identity, ObjectQueryParams, Shape, Params))
+		{
+			TraceEnd = Hit.ImpactPoint;
+		}
+
+		FRotator ProjectileRotation = FRotationMatrix::MakeFromX(TraceEnd - HandLocation).Rotator();
+
+		FTransform SpawnTM = FTransform(ProjectileRotation, HandLocation);
+		GetWorld()->SpawnActor<AActor>(ClassToSpawn, SpawnTM, SpawnParams);
 	}
 }
 
@@ -147,6 +204,8 @@ void APLMCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &APLMCharacter::Interact);
 
 		EnhancedInputComponent->BindAction(PrimaryAttackAction, ETriggerEvent::Triggered, this, &APLMCharacter::PrimaryAttack);
+		EnhancedInputComponent->BindAction(MovementAbilityAction, ETriggerEvent::Triggered, this, &APLMCharacter::Dash);
+		EnhancedInputComponent->BindAction(UltimateAbilityAction, ETriggerEvent::Triggered, this, &APLMCharacter::BlackHoleAttack);
 	}
 }
 

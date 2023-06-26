@@ -22,13 +22,27 @@ class PROJECTLIGHTMAN_API APLMCharacter : public ACharacter
 
 protected:
 
-	UPROPERTY(EditAnywhere, Category = "Attack");
+	UPROPERTY(EditAnywhere, Category = "Abilities");
 	TSubclassOf<AActor> ProjectileClass;
 
-	UPROPERTY(EditAnywhere, Category = "Attack");
+	UPROPERTY(EditAnywhere, Category = "Abilities");
+	TSubclassOf<AActor> BlackHoleProjectileClass;
+
+	UPROPERTY(EditAnywhere, Category = "Abilities")
+	TSubclassOf<AActor> DashProjectileClass;
+
+	UPROPERTY(EditAnywhere, Category = "Abilities");
 	UAnimMontage* PrimaryAttackAnim;
 
+	UPROPERTY(EditAnywhere, Category = "Abilities");
+	UAnimMontage* DashAnim;
+
+	UPROPERTY(EditAnywhere, Category = "Abilities");
+	UAnimMontage* BlackHoleAttackAnim;
+
 	FTimerHandle TimerHandle_PrimaryAttack;
+	FTimerHandle TimerHandle_Dash;
+	FTimerHandle TimerHandle_BlackHole;
 
 public:
 	// Sets default values for this character's properties
@@ -66,6 +80,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
 	UInputAction* PrimaryAttackAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
+	UInputAction* MovementAbilityAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
+	UInputAction* UltimateAbilityAction;
+
 	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components");
 	//UPLMAttributeComponent* AttributeComponent;
 
@@ -80,6 +100,11 @@ protected:
 	void Look(const FInputActionValue& Value);
 	void PrimaryAttack();
 	void Interact();
+	void Dash();
+	void Dash_TimeElapsed();
+	void BlackHoleAttack();
+	void BlackHoleAttack_TimeElapsed();
+	void SpawnProjectile(TSubclassOf<AActor> ClassToSpawn);
 
 	virtual void Jump() override;
 

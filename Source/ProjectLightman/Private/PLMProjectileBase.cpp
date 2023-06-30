@@ -7,6 +7,7 @@
 #include "Components/SphereComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "PLMAttributeComponent.h"
 
 // Sets default values
 APLMProjectileBase::APLMProjectileBase()
@@ -39,6 +40,17 @@ void APLMProjectileBase::BeginPlay()
 
 void APLMProjectileBase::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
+	if (OtherActor && OtherActor != GetInstigator())
+	{
+		UPLMAttributeComponent* AttributeComponent = Cast<UPLMAttributeComponent>(OtherActor->GetComponentByClass(UPLMAttributeComponent::StaticClass()));
+		if (AttributeComponent)
+		{
+			AttributeComponent->ApplyHealthChange(-20);
+
+			Explode();
+		}
+	}
+
 	Explode();
 }
 

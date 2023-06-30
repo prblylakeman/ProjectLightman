@@ -35,7 +35,7 @@ protected:
 	UParticleSystemComponent* EffectComponent;
 
 	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly);
-	//UParticleSystemComponent* ImpactComponent;
+	//UParticleSystem* ImpactEffect;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly);
 	UNiagaraComponent* NiagaraComponent;

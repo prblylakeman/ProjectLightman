@@ -24,9 +24,7 @@ APLMMagicProjectile::APLMMagicProjectile()
 	EffectComponent = CreateDefaultSubobject<UParticleSystemComponent>("EffectComponent");
 	EffectComponent->SetupAttachment(SphereComponent);
 
-	//ImpactComponent = CreateDefaultSubobject<UParticleSystemComponent>("ImpactComponent");
-	//ImpactComponent->SetupAttachment(SphereComponent);
-	//ImpactComponent->bAutoActivate = false;
+	
 
 	NiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>("NiagaraComponent");
 	NiagaraComponent->SetupAttachment(SphereComponent);

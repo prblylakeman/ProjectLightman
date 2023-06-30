@@ -31,6 +31,11 @@ void UPLMAttributeComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	// ...
 }
 
+bool UPLMAttributeComponent::IsAlive() const
+{
+	return Health > 0;
+}
+
 bool UPLMAttributeComponent::ApplyHealthChange(int Delta)
 {
 	Health += Delta;

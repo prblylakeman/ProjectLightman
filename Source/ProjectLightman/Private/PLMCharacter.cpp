@@ -26,13 +26,19 @@ APLMCharacter::APLMCharacter()
 
 	InteractComponent = CreateDefaultSubobject<UPLMInteractComponent>("InteractComponent");
 
-	//AttributeComponent = CreateDefaultSubobject<UPLMAttributeComponent>("AttributeComponent");
+	AttributeComponent = CreateDefaultSubobject<UPLMAttributeComponent>("AttributeComponent");
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
 	bUseControllerRotationYaw = false;
 }
 
+void APLMCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	AttributeComponent->OnChangeInitiated.AddDynamic(this, &APLMCharacter::OnChangeInitiated);
+}
 
 // Called when the game starts or when spawned
 void APLMCharacter::BeginPlay()
@@ -179,6 +185,15 @@ void APLMCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 void APLMCharacter::Jump()
 {
 	Super::Jump();
+}
+
+void APLMCharacter::OnChangeInitiated(AActor* InstigatorActor, UPLMAttributeComponent* OwningComponent, int NewHealth, int Delta)
+{
+	if (NewHealth <= 0 && Delta < 0)
+	{
+		APlayerController* PlayerController = Cast<APlayerController>(GetController());
+		DisableInput(PlayerController);
+	}
 }
 
 // Called every frame

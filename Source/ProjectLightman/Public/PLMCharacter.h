@@ -86,8 +86,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
 	UInputAction* UltimateAbilityAction;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components");
-	//UPLMAttributeComponent* AttributeComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components");
+	UPLMAttributeComponent* AttributeComponent;
 
 	void PrimaryAttackTimeElapsed();
 
@@ -107,6 +107,11 @@ protected:
 	void SpawnProjectile(TSubclassOf<AActor> ClassToSpawn);
 
 	virtual void Jump() override;
+
+	UFUNCTION()
+	void OnChangeInitiated(AActor* InstigatorActor, UPLMAttributeComponent* OwningComponent, int NewHealth, int Delta);
+
+	virtual void PostInitializeComponents() override;
 
 public:	
 	// Called every frame

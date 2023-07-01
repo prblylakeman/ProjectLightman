@@ -50,6 +50,15 @@ public:
 
 protected:
 
+	UPROPERTY(EditAnywhere, Category = "Abilities")
+	float PrimaryAttackDelay = 0.2f;
+
+	UPROPERTY(EditAnywhere, Category = "Abilities")
+	float DashAnimDelay = 0.2f;
+
+	UPROPERTY(EditAnywhere, Category = "Abilities")
+	float BlackHoleAnimDelay = 0.2f;
+
 	UPROPERTY(VisibleAnywhere);
 	USpringArmComponent* SpringArmComponent;
 
@@ -59,35 +68,36 @@ protected:
 	UPROPERTY(VisibleAnywhere);
 	UPLMInteractComponent* InteractComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input");
 	UInputMappingContext* PlayerMappingContext;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input");
 	UInputAction* MoveForwardAction;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input");
 	UInputAction* MoveRightAction;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input");
 	UInputAction* LookAction;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input");
 	UInputAction* JumpAction;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input");
 	UInputAction* InteractAction;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input");
 	UInputAction* PrimaryAttackAction;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input");
 	UInputAction* MovementAbilityAction;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input);
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input");
 	UInputAction* UltimateAbilityAction;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components");
+	UPROPERTY(EditAnywhere, BlueprintReadWrite);
 	UPLMAttributeComponent* AttributeComponent;
+
 
 	void PrimaryAttackTimeElapsed();
 

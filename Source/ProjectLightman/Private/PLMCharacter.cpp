@@ -91,8 +91,6 @@ void APLMCharacter::Look(const FInputActionValue& Value)
 
 void APLMCharacter::PrimaryAttack()
 {
-	float PrimaryAttackDelay = 0.2f;
-
 	PlayAnimMontage(PrimaryAttackAnim);
 
 	GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &APLMCharacter::PrimaryAttackTimeElapsed, PrimaryAttackDelay);
@@ -117,8 +115,6 @@ void APLMCharacter::Interact()
 
 void APLMCharacter::Dash()
 {
-	float DashAnimDelay = 0.2f;
-
 	PlayAnimMontage(DashAnim);
 
 	GetWorldTimerManager().SetTimer(TimerHandle_Dash, this, &APLMCharacter::Dash_TimeElapsed, DashAnimDelay);
@@ -131,8 +127,6 @@ void APLMCharacter::Dash_TimeElapsed()
 
 void APLMCharacter::BlackHoleAttack()
 {
-	float BlackHoleAnimDelay = 0.2f;
-
 	PlayAnimMontage(BlackHoleAttackAnim);
 
 	GetWorldTimerManager().SetTimer(TimerHandle_BlackHole, this, &APLMCharacter::BlackHoleAttack_TimeElapsed, BlackHoleAnimDelay);
@@ -147,7 +141,13 @@ void APLMCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 {
 	if (ensureAlways(ClassToSpawn))
 	{
+		
 		FVector HandLocation = GetMesh()->GetSocketLocation("hand_r");
+
+		if (ClassToSpawn == BlackHoleProjectileClass)
+		{
+			HandLocation.Z += 37;
+		}
 
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;

@@ -9,6 +9,7 @@
 class UParticleSystem;
 class USphereComponent;
 class UProjectileMovementComponent;
+class UAudioComponent;
 
 UCLASS(ABSTRACT)
 class PROJECTLIGHTMAN_API APLMProjectileBase : public AActor
@@ -35,6 +36,12 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UParticleSystemComponent* ParticleSystemComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Audio")
+	UAudioComponent* LoopingAudioComponent;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Audio")
+	USoundBase* ImpactAudio;
 
 	UFUNCTION()
 	virtual void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);

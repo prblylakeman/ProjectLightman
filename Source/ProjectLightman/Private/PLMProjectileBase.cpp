@@ -8,6 +8,7 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "PLMAttributeComponent.h"
+#include "Components/AudioComponent.h"
 
 // Sets default values
 APLMProjectileBase::APLMProjectileBase()
@@ -28,6 +29,8 @@ APLMProjectileBase::APLMProjectileBase()
 	ProjectileMovementComponent->bInitialVelocityInLocalSpace = true;
 	ProjectileMovementComponent->ProjectileGravityScale = 0.0f;
 	ProjectileMovementComponent->InitialSpeed = 8000;
+
+	LoopingAudioComponent = CreateDefaultSubobject<UAudioComponent>("LoopingAudioComponent");
 }
 
 
@@ -56,9 +59,11 @@ void APLMProjectileBase::OnActorHit(UPrimitiveComponent* HitComponent, AActor* O
 
 void APLMProjectileBase::Explode_Implementation()
 {
-	if (ensure(!IsPendingKill()))
+	if (ensure(IsValid(this)))
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(this, ImpactEffect, GetActorLocation(), GetActorRotation());
+
+		UGameplayStatics::PlaySoundAtLocation(this, ImpactAudio, GetActorLocation(), GetActorRotation());
 
 		Destroy();
 

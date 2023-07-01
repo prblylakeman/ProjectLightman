@@ -37,6 +37,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Abilities");
 	UAnimMontage* DashAnim;
 
+	// DO NOT CHANGE THIS WITHOUT CHANGING THE PROJECTILE SPAWN OFFSET
 	UPROPERTY(EditAnywhere, Category = "Abilities");
 	UAnimMontage* BlackHoleAttackAnim;
 
@@ -58,6 +59,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Abilities")
 	float BlackHoleAnimDelay = 0.2f;
+
+	UPROPERTY(EditAnywhere, Category = "Abilities")
+	float BlackHoleOffset = 37.0f;
 
 	UPROPERTY(VisibleAnywhere);
 	USpringArmComponent* SpringArmComponent;

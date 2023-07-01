@@ -146,7 +146,7 @@ void APLMCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 
 		if (ClassToSpawn == BlackHoleProjectileClass)
 		{
-			HandLocation.Z += 37;
+			HandLocation.Z += BlackHoleOffset;
 		}
 
 		FActorSpawnParameters SpawnParams;

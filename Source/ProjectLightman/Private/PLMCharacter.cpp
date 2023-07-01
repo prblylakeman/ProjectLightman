@@ -54,28 +54,34 @@ void APLMCharacter::BeginPlay()
 
 void APLMCharacter::MoveForward(const FInputActionValue& Value)
 {
-	const float DirectionValue = Value.Get<float>();
-	
-	if (Controller && (DirectionValue != 0.f))
+	if (bCanMove == true)
 	{
-		FRotator ControlRot = GetControlRotation();
-		ControlRot.Pitch = 0.f;
-		ControlRot.Roll = 0.f;
-		AddMovementInput(ControlRot.Vector(), DirectionValue);
+		const float DirectionValue = Value.Get<float>();
+
+		if (Controller && (DirectionValue != 0.f))
+		{
+			FRotator ControlRot = GetControlRotation();
+			ControlRot.Pitch = 0.f;
+			ControlRot.Roll = 0.f;
+			AddMovementInput(ControlRot.Vector(), DirectionValue);
+		}
 	}
 }
 
 void APLMCharacter::MoveRight(const FInputActionValue& Value)
 {
-	const float RightValue = Value.Get<float>();
+	if (bCanMove == true)
+	{
+		const float RightValue = Value.Get<float>();
 
-	FRotator ControlRot = GetControlRotation();
-	ControlRot.Pitch = 0.f;
-	ControlRot.Roll = 0.f;
+		FRotator ControlRot = GetControlRotation();
+		ControlRot.Pitch = 0.f;
+		ControlRot.Roll = 0.f;
 
-	FVector RightVector = FRotationMatrix(ControlRot).GetScaledAxis(EAxis::Y);
-		
-	AddMovementInput(RightVector, RightValue);
+		FVector RightVector = FRotationMatrix(ControlRot).GetScaledAxis(EAxis::Y);
+
+		AddMovementInput(RightVector, RightValue);
+	}
 }
 
 void APLMCharacter::Look(const FInputActionValue& Value)
@@ -91,9 +97,13 @@ void APLMCharacter::Look(const FInputActionValue& Value)
 
 void APLMCharacter::PrimaryAttack()
 {
-	PlayAnimMontage(PrimaryAttackAnim);
+	if (bCanMove == true)
+	{
+		PlayAnimMontage(PrimaryAttackAnim);
 
-	GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &APLMCharacter::PrimaryAttackTimeElapsed, PrimaryAttackDelay);
+		GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &APLMCharacter::PrimaryAttackTimeElapsed, PrimaryAttackDelay);
+	}
+
 
 	// clear timer code GetWorldTimerManager().ClearTimer(TimerHandle_PrimaryAttack);
 
@@ -109,15 +119,21 @@ void APLMCharacter::Interact()
 {
 	if (InteractComponent)
 	{
-		InteractComponent->PrimaryInteract();
+		if (bCanMove == true)
+		{
+			InteractComponent->PrimaryInteract();
+		}
 	}
 }
 
 void APLMCharacter::Dash()
 {
-	PlayAnimMontage(DashAnim);
+	if (bCanMove == true)
+	{
+		PlayAnimMontage(DashAnim);
 
-	GetWorldTimerManager().SetTimer(TimerHandle_Dash, this, &APLMCharacter::Dash_TimeElapsed, DashAnimDelay);
+		GetWorldTimerManager().SetTimer(TimerHandle_Dash, this, &APLMCharacter::Dash_TimeElapsed, DashAnimDelay);
+	}
 }
 
 void APLMCharacter::Dash_TimeElapsed()
@@ -127,14 +143,22 @@ void APLMCharacter::Dash_TimeElapsed()
 
 void APLMCharacter::BlackHoleAttack()
 {
-	PlayAnimMontage(BlackHoleAttackAnim);
+	if (bCanMove == true)
+	{
+		PlayAnimMontage(BlackHoleAttackAnim);
 
-	GetWorldTimerManager().SetTimer(TimerHandle_BlackHole, this, &APLMCharacter::BlackHoleAttack_TimeElapsed, BlackHoleAnimDelay);
+		GetWorldTimerManager().SetTimer(TimerHandle_BlackHole, this, &APLMCharacter::BlackHoleAttack_TimeElapsed, BlackHoleAnimDelay);
+
+		bCanMove = false;
+	}
+	//Controller->SetIgnoreMoveInput(true);
 }
 
 void APLMCharacter::BlackHoleAttack_TimeElapsed()
 {
 	SpawnProjectile(BlackHoleProjectileClass);
+
+	bCanMove = true;
 }
 
 void APLMCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
@@ -184,7 +208,10 @@ void APLMCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 
 void APLMCharacter::Jump()
 {
-	Super::Jump();
+	if (bCanMove == true)
+	{
+		Super::Jump();
+	}
 }
 
 void APLMCharacter::OnChangeInitiated(AActor* InstigatorActor, UPLMAttributeComponent* OwningComponent, int NewHealth, int Delta)

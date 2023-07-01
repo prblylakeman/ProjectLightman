@@ -63,6 +63,8 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Abilities")
 	float BlackHoleOffset = 37.0f;
 
+	bool bCanMove = true;
+
 	UPROPERTY(VisibleAnywhere);
 	USpringArmComponent* SpringArmComponent;
 

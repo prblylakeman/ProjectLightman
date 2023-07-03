@@ -19,6 +19,7 @@ APLMProjectileBase::APLMProjectileBase()
 	SphereComponent = CreateDefaultSubobject<USphereComponent>("SphereComponent");
 	SphereComponent->SetCollisionProfileName("Projectile");
 	SphereComponent->OnComponentHit.AddDynamic(this, &APLMProjectileBase::OnActorHit);
+	SphereComponent->OnComponentBeginOverlap.AddDynamic(this, &APLMProjectileBase::OnActorOverlap);
 	RootComponent = SphereComponent;
 
 	ParticleSystemComponent = CreateDefaultSubobject<UParticleSystemComponent>("ParticleSystemComponent");
@@ -56,6 +57,21 @@ void APLMProjectileBase::OnActorHit(UPrimitiveComponent* HitComponent, AActor* O
 
 	Explode();
 }
+
+void APLMProjectileBase::OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (OtherActor && OtherActor != GetInstigator())
+	{
+		UPLMAttributeComponent* AttributeComponent = Cast<UPLMAttributeComponent>(OtherActor->GetComponentByClass(UPLMAttributeComponent::StaticClass()));
+		if (AttributeComponent)
+		{
+			AttributeComponent->ApplyHealthChange(-20);
+
+			Explode();
+		}
+	}
+}
+
 
 void APLMProjectileBase::Explode_Implementation()
 {

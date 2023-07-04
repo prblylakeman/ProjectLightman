@@ -25,10 +25,3 @@ void APLMAICharacter::Tick(float DeltaTime)
 
 }
 
-// Called to bind functionality to input
-void APLMAICharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
-

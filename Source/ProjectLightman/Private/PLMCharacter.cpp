@@ -148,7 +148,7 @@ void APLMCharacter::BlackHoleAttack()
 		PlayAnimMontage(BlackHoleAttackAnim);
 
 		GetWorldTimerManager().SetTimer(TimerHandle_BlackHole, this, &APLMCharacter::BlackHoleAttack_TimeElapsed, BlackHoleAnimDelay);
-
+		
 		bCanMove = false;
 	}
 	//Controller->SetIgnoreMoveInput(true);
@@ -166,7 +166,7 @@ void APLMCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 	if (ensureAlways(ClassToSpawn))
 	{
 		
-		FVector HandLocation = GetMesh()->GetSocketLocation("hand_r");
+		FVector HandLocation = GetMesh()->GetSocketLocation("WeaponSocket");
 
 		if (ClassToSpawn == BlackHoleProjectileClass)
 		{
@@ -205,6 +205,7 @@ void APLMCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 		GetWorld()->SpawnActor<AActor>(ClassToSpawn, SpawnTM, SpawnParams);
 	}
 }
+
 
 void APLMCharacter::Jump()
 {

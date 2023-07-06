@@ -25,7 +25,14 @@ void UPLMBTService_CheckAttackRange::TickNode(UBehaviorTreeComponent& OwnerComp,
 								
 								bool bWithinRange = DistanceTo < 2000.f;
 
-								BlackboardComponent->SetValueAsBool(AttackRangeKey.SelectedKeyName, bWithinRange);
+								bool bHasLineOfSight = false;
+
+								if (bWithinRange)
+								{
+									bHasLineOfSight = AIController->LineOfSightTo(TargetActor);
+								}
+
+								BlackboardComponent->SetValueAsBool(AttackRangeKey.SelectedKeyName, (bWithinRange && bHasLineOfSight));
 							}
 					}
 			}

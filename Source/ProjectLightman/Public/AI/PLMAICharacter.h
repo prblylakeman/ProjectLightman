@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "PLMAICharacter.generated.h"
 
+class UPawnSensingComponent;
+
 UCLASS()
 class PROJECTLIGHTMAN_API APLMAICharacter : public ACharacter
 {
@@ -16,6 +18,15 @@ public:
 	APLMAICharacter();
 
 protected:
+
+	virtual void PostInitializeComponents() override;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UPawnSensingComponent* PawnSensingComponent;
+
+	UFUNCTION()
+	void OnPawnSeen(APawn* Pawn);
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 

@@ -38,11 +38,16 @@ bool UPLMAttributeComponent::IsAlive() const
 
 bool UPLMAttributeComponent::ApplyHealthChange(int Delta)
 {
-	Health += Delta;
+	//Health += Delta;
 
-	OnChangeInitiated.Broadcast(nullptr, this, Health, Delta);
+	int OldHealth = Health;
 
-	return true;
+	Health = FMath::Clamp(Health + Delta, 0, MaxHealth);
+
+	int ActualDelta = Health - OldHealth;
+	OnChangeInitiated.Broadcast(nullptr, this, Health, ActualDelta);
+
+	return ActualDelta != 0;
 }
 
 

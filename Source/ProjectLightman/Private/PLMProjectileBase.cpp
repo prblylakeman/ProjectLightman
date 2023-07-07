@@ -32,6 +32,11 @@ APLMProjectileBase::APLMProjectileBase()
 	ProjectileMovementComponent->InitialSpeed = 8000;
 
 	LoopingAudioComponent = CreateDefaultSubobject<UAudioComponent>("LoopingAudioComponent");
+	LoopingAudioComponent->SetupAttachment(RootComponent);
+
+	ImpactShakeInnerRadius = 100.0f;
+	ImpactShakeOuterRadius = 1000.0f;
+
 }
 
 
@@ -80,6 +85,8 @@ void APLMProjectileBase::Explode_Implementation()
 		UGameplayStatics::SpawnEmitterAtLocation(this, ImpactEffect, GetActorLocation(), GetActorRotation());
 
 		UGameplayStatics::PlaySoundAtLocation(this, ImpactAudio, GetActorLocation(), GetActorRotation());
+
+		UGameplayStatics::PlayWorldCameraShake(this, ImpactShake, GetActorLocation(), ImpactShakeInnerRadius, ImpactShakeOuterRadius);
 
 		Destroy();
 

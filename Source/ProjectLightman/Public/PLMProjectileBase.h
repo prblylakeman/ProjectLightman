@@ -10,6 +10,7 @@ class UParticleSystem;
 class USphereComponent;
 class UProjectileMovementComponent;
 class UAudioComponent;
+class UCameraShakeBase;
 
 UCLASS(ABSTRACT)
 class PROJECTLIGHTMAN_API APLMProjectileBase : public AActor
@@ -42,6 +43,15 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Audio")
 	USoundBase* ImpactAudio;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Shake")
+	TSubclassOf<UCameraShakeBase> ImpactShake;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Shake")
+	float ImpactShakeInnerRadius;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Shake")
+	float ImpactShakeOuterRadius;
 
 	UFUNCTION()
 	virtual void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);

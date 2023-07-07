@@ -10,6 +10,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "PLMInteractComponent.h"
 #include "PLMAttributeComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 APLMCharacter::APLMCharacter()
@@ -31,6 +32,8 @@ APLMCharacter::APLMCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
 	bUseControllerRotationYaw = false;
+
+	SocketName = "WeaponSocket";
 }
 
 void APLMCharacter::PostInitializeComponents()
@@ -100,6 +103,7 @@ void APLMCharacter::PrimaryAttack()
 	if (bCanMove == true)
 	{
 		PlayAnimMontage(PrimaryAttackAnim);
+		UGameplayStatics::SpawnEmitterAttached(PrimaryCastEffect, GetMesh(), SocketName, FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::SnapToTarget);
 
 		GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &APLMCharacter::PrimaryAttackTimeElapsed, PrimaryAttackDelay);
 	}
@@ -131,6 +135,7 @@ void APLMCharacter::Dash()
 	if (bCanMove == true)
 	{
 		PlayAnimMontage(DashAnim);
+		UGameplayStatics::SpawnEmitterAttached(DashCastEffect, GetMesh(), SocketName, FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::SnapToTarget);
 
 		GetWorldTimerManager().SetTimer(TimerHandle_Dash, this, &APLMCharacter::Dash_TimeElapsed, DashAnimDelay);
 	}
@@ -146,6 +151,7 @@ void APLMCharacter::BlackHoleAttack()
 	if (bCanMove == true)
 	{
 		PlayAnimMontage(BlackHoleAttackAnim);
+		UGameplayStatics::SpawnEmitterAttached(BlackHoleCastEffect, GetMesh(), SocketName, FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::SnapToTarget);
 
 		GetWorldTimerManager().SetTimer(TimerHandle_BlackHole, this, &APLMCharacter::BlackHoleAttack_TimeElapsed, BlackHoleAnimDelay);
 		
@@ -166,7 +172,7 @@ void APLMCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 	if (ensureAlways(ClassToSpawn))
 	{
 		
-		FVector HandLocation = GetMesh()->GetSocketLocation("WeaponSocket");
+		FVector HandLocation = GetMesh()->GetSocketLocation(SocketName);
 
 		if (ClassToSpawn == BlackHoleProjectileClass)
 		{

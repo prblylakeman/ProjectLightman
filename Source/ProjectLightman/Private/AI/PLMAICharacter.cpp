@@ -33,7 +33,7 @@ void APLMAICharacter::OnPawnSeen(APawn* Pawn)
 
 		BlackboardComponent->SetValueAsObject("TargetActor", Pawn);
 
-		DrawDebugString(GetWorld(), GetActorLocation(), "Player Spotted", nullptr, FColor::White, 4.0f, true);
+		//DrawDebugString(GetWorld(), GetActorLocation(), "Player Spotted", nullptr, FColor::White, 4.0f, true);
 	}
 }
 

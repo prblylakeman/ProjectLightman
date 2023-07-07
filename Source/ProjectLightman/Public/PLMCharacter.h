@@ -14,6 +14,7 @@ class UInputAction;
 class UPLMInteractComponent;
 class UAnimMontage;
 class UPLMAttributeComponent;
+class UParticleSystem;
 
 UCLASS()
 class PROJECTLIGHTMAN_API APLMCharacter : public ACharacter
@@ -44,6 +45,15 @@ protected:
 	FTimerHandle TimerHandle_PrimaryAttack;
 	FTimerHandle TimerHandle_Dash;
 	FTimerHandle TimerHandle_BlackHole;
+
+	UPROPERTY(EditAnywhere, Category = "Abilities")
+	UParticleSystem* PrimaryCastEffect;
+	
+	UPROPERTY(EditAnywhere, Category = "Abilities")
+	UParticleSystem* DashCastEffect;
+
+	UPROPERTY(EditAnywhere, Category = "Abilities")
+	UParticleSystem* BlackHoleCastEffect;
 
 public:
 	// Sets default values for this character's properties
@@ -103,6 +113,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite);
 	UPLMAttributeComponent* AttributeComponent;
+
+	UPROPERTY(VisibleAnywhere, Category = "Abilities")
+	FName SocketName;
 
 
 	void PrimaryAttackTimeElapsed();

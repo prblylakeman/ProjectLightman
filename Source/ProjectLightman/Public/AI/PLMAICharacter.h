@@ -7,6 +7,7 @@
 #include "PLMAICharacter.generated.h"
 
 class UPawnSensingComponent;
+class UPLMAttributeComponent;
 
 UCLASS()
 class PROJECTLIGHTMAN_API APLMAICharacter : public ACharacter
@@ -27,8 +28,14 @@ protected:
 	UFUNCTION()
 	void OnPawnSeen(APawn* Pawn);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite);
+	UPLMAttributeComponent* AttributeComponent;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UFUNCTION()
+	void OnChangeInitiated(AActor* InstigatorActor, UPLMAttributeComponent* OwningComponent, int NewHealth, int Delta);
 
 public:	
 	// Called every frame

@@ -6,6 +6,8 @@
 #include "AIModule/Classes/AIController.h"
 #include "AIModule/Classes/BehaviorTree/BlackboardComponent.h"
 #include "DrawDebugHelpers.h"
+#include "PLMAttributeComponent.h"
+#include "BrainComponent.h"
 
 // Sets default values
 APLMAICharacter::APLMAICharacter()
@@ -15,6 +17,10 @@ APLMAICharacter::APLMAICharacter()
 
 	PawnSensingComponent = CreateDefaultSubobject<UPawnSensingComponent>("PawnSensingComponent");
 
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+	AttributeComponent = CreateDefaultSubobject<UPLMAttributeComponent>("AttributeComponent");
+
 }
 
 void APLMAICharacter::PostInitializeComponents()
@@ -22,6 +28,8 @@ void APLMAICharacter::PostInitializeComponents()
 	Super::PostInitializeComponents();
 
 	PawnSensingComponent->OnSeePawn.AddDynamic(this, &APLMAICharacter::OnPawnSeen);
+
+	AttributeComponent->OnChangeInitiated.AddDynamic(this, &APLMAICharacter::OnChangeInitiated);
 }
 
 void APLMAICharacter::OnPawnSeen(APawn* Pawn)
@@ -42,6 +50,30 @@ void APLMAICharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+void APLMAICharacter::OnChangeInitiated(AActor* InstigatorActor, UPLMAttributeComponent* OwningComponent, int NewHealth, int Delta)
+{
+	if (Delta < 0)
+	{
+
+
+		if (NewHealth <= 0)
+		{
+			AAIController* AIController = Cast<AAIController>(GetController());
+
+			if (AIController)
+			{
+				AIController->GetBrainComponent()->StopLogic("Killed");
+			}
+			
+			GetMesh()->SetAllBodiesSimulatePhysics(true);
+			GetMesh()->SetCollisionProfileName("Ragdoll");
+
+
+			SetLifeSpan(8.0f);
+		}
+	}
 }
 
 // Called every frame

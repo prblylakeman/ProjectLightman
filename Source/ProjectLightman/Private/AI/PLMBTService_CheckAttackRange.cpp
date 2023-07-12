@@ -23,7 +23,7 @@ void UPLMBTService_CheckAttackRange::TickNode(UBehaviorTreeComponent& OwnerComp,
 							{
 								float DistanceTo = FVector::Distance(TargetActor->GetActorLocation(), AIPawn->GetActorLocation());
 								
-								bool bWithinRange = DistanceTo < 2000.f;
+								bool bWithinRange = DistanceTo < 2600.f;
 
 								bool bHasLineOfSight = false;
 

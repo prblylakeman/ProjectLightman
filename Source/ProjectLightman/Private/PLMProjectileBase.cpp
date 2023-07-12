@@ -37,6 +37,8 @@ APLMProjectileBase::APLMProjectileBase()
 	ImpactShakeInnerRadius = 100.0f;
 	ImpactShakeOuterRadius = 1000.0f;
 
+	Damage = -20;
+
 }
 
 
@@ -54,7 +56,7 @@ void APLMProjectileBase::OnActorHit(UPrimitiveComponent* HitComponent, AActor* O
 		UPLMAttributeComponent* AttributeComponent = Cast<UPLMAttributeComponent>(OtherActor->GetComponentByClass(UPLMAttributeComponent::StaticClass()));
 		if (AttributeComponent)
 		{
-			AttributeComponent->ApplyHealthChange(-20);
+			AttributeComponent->ApplyHealthChange(Damage);
 
 			Explode();
 		}
@@ -70,7 +72,7 @@ void APLMProjectileBase::OnActorOverlap(UPrimitiveComponent* OverlappedComponent
 		UPLMAttributeComponent* AttributeComponent = Cast<UPLMAttributeComponent>(OtherActor->GetComponentByClass(UPLMAttributeComponent::StaticClass()));
 		if (AttributeComponent)
 		{
-			AttributeComponent->ApplyHealthChange(-20);
+			AttributeComponent->ApplyHealthChange(Damage);
 
 			Explode();
 		}

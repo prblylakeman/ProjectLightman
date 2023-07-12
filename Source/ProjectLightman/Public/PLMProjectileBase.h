@@ -53,6 +53,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Shake")
 	float ImpactShakeOuterRadius;
 
+	UPROPERTY(EditAnywhere, Category = "Damage")
+	int Damage;
+
 	UFUNCTION()
 	virtual void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 

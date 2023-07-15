@@ -32,18 +32,7 @@ void APLMAICharacter::PostInitializeComponents()
 	AttributeComponent->OnChangeInitiated.AddDynamic(this, &APLMAICharacter::OnChangeInitiated);
 }
 
-void APLMAICharacter::OnPawnSeen(APawn* Pawn)
-{
-	AAIController* AIController = Cast<AAIController>(GetController());
-	if (AIController)
-	{
-		UBlackboardComponent* BlackboardComponent = AIController->GetBlackboardComponent();
 
-		BlackboardComponent->SetValueAsObject("TargetActor", Pawn);
-
-		//DrawDebugString(GetWorld(), GetActorLocation(), "Player Spotted", nullptr, FColor::White, 4.0f, true);
-	}
-}
 
 // Called when the game starts or when spawned
 void APLMAICharacter::BeginPlay()
@@ -56,6 +45,11 @@ void APLMAICharacter::OnChangeInitiated(AActor* InstigatorActor, UPLMAttributeCo
 {
 	if (Delta < 0)
 	{
+
+		if (InstigatorActor != this)
+		{
+			SetTargetActor(InstigatorActor);
+		}
 
 
 		if (NewHealth <= 0)
@@ -74,6 +68,22 @@ void APLMAICharacter::OnChangeInitiated(AActor* InstigatorActor, UPLMAttributeCo
 			SetLifeSpan(8.0f);
 		}
 	}
+}
+
+void APLMAICharacter::SetTargetActor(AActor* NewTarget)
+{
+	AAIController* AIController = Cast<AAIController>(GetController());
+	if (AIController)
+	{
+		AIController->GetBlackboardComponent()->SetValueAsObject("TargetActor", NewTarget);
+	}
+}
+
+void APLMAICharacter::OnPawnSeen(APawn* Pawn)
+{
+	SetTargetActor(Pawn);
+
+	//DrawDebugString(GetWorld(), GetActorLocation(), "Player Spotted", nullptr, FColor::White, 4.0f, true);
 }
 
 // Called every frame

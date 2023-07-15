@@ -49,7 +49,7 @@ public:
 	FOnChangeInitiated OnChangeInitiated;
 
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
-	bool ApplyHealthChange(int Delta);
+	bool ApplyHealthChange(AActor* InstigatorActor, int Delta);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool DamageOverTime;

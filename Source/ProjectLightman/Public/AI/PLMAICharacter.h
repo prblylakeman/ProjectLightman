@@ -37,6 +37,8 @@ protected:
 	UFUNCTION()
 	void OnChangeInitiated(AActor* InstigatorActor, UPLMAttributeComponent* OwningComponent, int NewHealth, int Delta);
 
+	void SetTargetActor(AActor* NewTarget);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

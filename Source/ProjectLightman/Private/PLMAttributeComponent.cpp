@@ -37,7 +37,7 @@ bool UPLMAttributeComponent::IsAlive() const
 	return Health > 0;
 }
 
-bool UPLMAttributeComponent::ApplyHealthChange(int Delta)
+bool UPLMAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, int Delta)
 {
 	//Health += Delta;
 
@@ -46,7 +46,7 @@ bool UPLMAttributeComponent::ApplyHealthChange(int Delta)
 	Health = FMath::Clamp(Health + Delta, 0, MaxHealth);
 
 	int ActualDelta = Health - OldHealth;
-	OnChangeInitiated.Broadcast(nullptr, this, Health, ActualDelta);
+	OnChangeInitiated.Broadcast(InstigatorActor, this, Health, ActualDelta);
 
 	return ActualDelta != 0;
 }
@@ -55,7 +55,7 @@ void UPLMAttributeComponent::DamagingOverTime()
 {
 	if (DamageOverTime)
 	{
-		ApplyHealthChange(-40);
+		//
 	}
 }
 

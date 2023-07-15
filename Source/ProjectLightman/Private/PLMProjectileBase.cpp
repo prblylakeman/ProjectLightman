@@ -56,7 +56,7 @@ void APLMProjectileBase::OnActorHit(UPrimitiveComponent* HitComponent, AActor* O
 		UPLMAttributeComponent* AttributeComponent = Cast<UPLMAttributeComponent>(OtherActor->GetComponentByClass(UPLMAttributeComponent::StaticClass()));
 		if (AttributeComponent)
 		{
-			AttributeComponent->ApplyHealthChange(Damage);
+			AttributeComponent->ApplyHealthChange(GetInstigator(), Damage);
 
 			Explode();
 		}
@@ -72,7 +72,7 @@ void APLMProjectileBase::OnActorOverlap(UPrimitiveComponent* OverlappedComponent
 		UPLMAttributeComponent* AttributeComponent = Cast<UPLMAttributeComponent>(OtherActor->GetComponentByClass(UPLMAttributeComponent::StaticClass()));
 		if (AttributeComponent)
 		{
-			AttributeComponent->ApplyHealthChange(Damage);
+			AttributeComponent->ApplyHealthChange(GetInstigator(), Damage);
 
 			Explode();
 		}

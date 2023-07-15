@@ -51,6 +51,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	bool ApplyHealthChange(int Delta);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool DamageOverTime;
+
+	UFUNCTION(BlueprintCallable)
+	void DamagingOverTime();
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

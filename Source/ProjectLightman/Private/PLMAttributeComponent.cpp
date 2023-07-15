@@ -11,6 +11,7 @@ UPLMAttributeComponent::UPLMAttributeComponent()
 	MaxHealth = 100;
 	Health = 100;
 	InterpolatedHealth = 100;
+	DamageOverTime = false;
 }
 
 // Called when the game starts
@@ -50,5 +51,12 @@ bool UPLMAttributeComponent::ApplyHealthChange(int Delta)
 	return ActualDelta != 0;
 }
 
+void UPLMAttributeComponent::DamagingOverTime()
+{
+	if (DamageOverTime)
+	{
+		ApplyHealthChange(-40);
+	}
+}
 
 

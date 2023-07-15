@@ -34,6 +34,8 @@ APLMCharacter::APLMCharacter()
 	bUseControllerRotationYaw = false;
 
 	SocketName = "WeaponSocket";
+
+	TimeToHitParameter = "TimeToHit";
 }
 
 void APLMCharacter::PostInitializeComponents()
@@ -223,6 +225,11 @@ void APLMCharacter::Jump()
 
 void APLMCharacter::OnChangeInitiated(AActor* InstigatorActor, UPLMAttributeComponent* OwningComponent, int NewHealth, int Delta)
 {
+	if (Delta < 0)
+	{
+		GetMesh()->SetScalarParameterValueOnMaterials(TimeToHitParameter, GetWorld()->TimeSeconds);
+	}
+	
 	if (NewHealth <= 0 && Delta < 0)
 	{
 		APlayerController* PlayerController = Cast<APlayerController>(GetController());

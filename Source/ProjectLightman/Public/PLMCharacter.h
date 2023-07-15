@@ -55,6 +55,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Abilities")
 	UParticleSystem* BlackHoleCastEffect;
 
+
 public:
 	// Sets default values for this character's properties
 	APLMCharacter();
@@ -116,6 +117,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Abilities")
 	FName SocketName;
+
+	UPROPERTY(VisibleAnywhere, Category = "Effect")
+	FName TimeToHitParameter;
 
 
 	void PrimaryAttackTimeElapsed();

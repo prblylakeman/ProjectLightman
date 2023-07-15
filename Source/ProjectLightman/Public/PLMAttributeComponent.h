@@ -17,6 +17,12 @@ public:
 	// Sets default values for this component's properties
 	UPLMAttributeComponent();
 
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+	static UPLMAttributeComponent* GetAttributes(AActor* FromActor);
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+	static bool IsActorAlive(AActor* Actor);
+
 protected:
 
 	// EditAnywhere - edit in BP editor and per-instance in level

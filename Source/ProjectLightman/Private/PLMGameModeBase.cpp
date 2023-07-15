@@ -28,7 +28,7 @@ void APLMGameModeBase::SpawnBotTimerElapsed()
 	{
 		APLMAICharacter* AIBot = *It;
 
-		UPLMAttributeComponent* AttributeComponent = Cast<UPLMAttributeComponent>(AIBot->GetComponentByClass(UPLMAttributeComponent::StaticClass()));
+		UPLMAttributeComponent* AttributeComponent = UPLMAttributeComponent::GetAttributes(AIBot);
 
 		if (AttributeComponent && AttributeComponent->IsAlive())
 		{

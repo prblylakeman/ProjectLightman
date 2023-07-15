@@ -59,4 +59,26 @@ void UPLMAttributeComponent::DamagingOverTime()
 	}
 }
 
+UPLMAttributeComponent* UPLMAttributeComponent::GetAttributes(AActor* FromActor)
+{
+	if (FromActor)
+	{
+		return FromActor->FindComponentByClass<UPLMAttributeComponent>();
+	}
+
+	return nullptr;
+
+}
+
+bool UPLMAttributeComponent::IsActorAlive(AActor* Actor)
+{
+	UPLMAttributeComponent* AttributeComponent = GetAttributes(Actor);
+	if (AttributeComponent)
+	{
+		return AttributeComponent->IsAlive();
+	}
+
+	return false;
+}
+
 

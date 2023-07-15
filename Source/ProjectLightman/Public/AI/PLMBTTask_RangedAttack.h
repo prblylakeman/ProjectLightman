@@ -19,6 +19,16 @@ class PROJECTLIGHTMAN_API UPLMBTTask_RangedAttack : public UBTTaskNode
 protected:
 
 	UPROPERTY(EditAnywhere, Category = "AI")
+	float MaxProjectileSpread;
+
+	UPROPERTY(EditAnywhere, Category = "AI")
+	float MaxProjectilePitch;
+
+	UPROPERTY(EditAnywhere, Category = "AI")
 	TSubclassOf<AActor> ProjectileClass;
+
+public:
+
+	UPLMBTTask_RangedAttack();
 	
 };

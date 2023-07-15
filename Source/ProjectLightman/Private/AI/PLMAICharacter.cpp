@@ -21,6 +21,8 @@ APLMAICharacter::APLMAICharacter()
 
 	AttributeComponent = CreateDefaultSubobject<UPLMAttributeComponent>("AttributeComponent");
 
+	TimeToHitParameter = "TimeToHit";
+
 }
 
 void APLMAICharacter::PostInitializeComponents()
@@ -51,6 +53,7 @@ void APLMAICharacter::OnChangeInitiated(AActor* InstigatorActor, UPLMAttributeCo
 			SetTargetActor(InstigatorActor);
 		}
 
+		GetMesh()->SetScalarParameterValueOnMaterials(TimeToHitParameter, GetWorld()->TimeSeconds);
 
 		if (NewHealth <= 0)
 		{
